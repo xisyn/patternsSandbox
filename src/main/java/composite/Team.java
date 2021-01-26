@@ -1,12 +1,11 @@
 package composite;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Команда
@@ -16,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Team extends TeamComponent {
 
-    private List<TeamComponent> teamComponents = new ArrayList<>();
+    private List<TeamComponent> teamComponents;
 
     private String description;
 
@@ -28,6 +27,7 @@ public class Team extends TeamComponent {
         this.description = description;
         this.spendTime = spendTime;
         this.cost = cost;
+        teamComponents = new ArrayList<>();
     }
 
     @Override
@@ -43,5 +43,11 @@ public class Team extends TeamComponent {
     @Override
     public TeamComponent getChild(int index) {
         return teamComponents.get(index);
+    }
+
+    public String getDescription() {
+        return teamComponents.stream()
+                             .map(TeamComponent::getDescription)
+                             .collect(Collectors.joining(", "));
     }
 }
